@@ -44,7 +44,7 @@ def parse(input_string_var):
                 if not first_func:
                    first_func = func_name
                 else:
-                    print("The current Function is: "+func_name+". The previous Function was: "+first_func+".")
+                    print(f"The current Function is: {func_name}. The previous Function was: {first_func}.")
                     first_func = func_name
                 
     # This walks through the entire tree and finds all function calls
@@ -56,9 +56,10 @@ def parse(input_string_var):
     # Inspect the AST structure (e.g., dump it to a readable format)
     print("coppied to clipboard")
     unparsed = ast.unparse(tree)
-    print("Plain unparse: "+unparsed)
+    print(f"Plain unparse: {unparsed}")
     print("")
-    print("Unparsed string with random id removed: "+ remove_random(unparsed, substring_var))
+    idless_unparse = remove_random(unparsed, substring_var)
+    print(f"Unparsed string with random id removed: {idless_unparse}")
     print("Press any key to exit...")
     msvcrt.getch()
 
