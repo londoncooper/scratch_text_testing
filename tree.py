@@ -3,6 +3,7 @@ import time
 import subprocess
 import re
 import random
+import msvcrt
 
 def insert_randoms(main_string, target_sub):
     # Define a function to generate the replacement string
@@ -23,17 +24,16 @@ def remove_random(main_string, target_sub):
     return result   
 
 
-test_script =  "forever(move(10), say_for('banana', 5))"
+test_script =  "forever(move(10), say_for('banana', 5), set_var('my_var', 5))"
 
 def copy_windows(text):
         subprocess.run("clip", input=text, check=True, encoding="utf-8")
 
-def parse():
-    code_str = input("Give line of scratch text: ")
-    substring_var = ["move", "say_for"]
-    code_str = insert_randoms(code_str,substring_var)
+def parse(input_string_var):
+    substring_var = ["move", "say_for","set_var"]
+    input_string_var = insert_randoms(input_string_var,substring_var)
     # Parse the string into an Abstract Syntax Tree
-    tree = ast.parse(code_str.strip(), mode='eval')
+    tree = ast.parse(input_string_var.strip(), mode='eval')
     first_func:str = ""
 
     for node in ast.walk(tree):
@@ -59,16 +59,17 @@ def parse():
     print("Plain unparse: "+unparsed)
     print("")
     print("Unparsed string with random id removed: "+ remove_random(unparsed, substring_var))
-    time.sleep(5)
+    print("Press any key to exit...")
+    msvcrt.getch()
 
 def choice_logic():
-    choice = input("p or up: ")
-    if choice.lower() == "p":
-        parse()
-    elif choice.lower() == "up":
-        pass
+    choice = input("1: use test or 2: enter your own: ")
+    if choice == "1":
+        parse(test_script)
+    elif choice == "2":
+        parse(input("Give line of scratch text: "))
     else:
          print("invalid input.")
          choice_logic()
 
-parse()
+choice_logic()
