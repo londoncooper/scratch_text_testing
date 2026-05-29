@@ -1,0 +1,66 @@
+{
+  "targets": [
+    {
+      "isStage": false,
+      "name": "Sprite1",
+      "variables": {
+        "47ab38bb-a005-46b4-bf29-5af5b8c73570": [
+          "my variable",
+          0
+        ]
+      },
+      "lists": {},
+      "broadcasts": {},
+      "blocks": {
+        "dfeb6491-b536-4ad4-b9f8-5f8523f04782": {
+          "opcode": "event_whenflagclicked",
+          "next": "899d1491-e3b2-4ccb-a57a-1c47e5208ec0",
+          "parent": null,
+          "inputs": {},
+          "fields": {},
+          "shadow": false,
+          "topLevel": true,
+          "x": 100,
+          "y": 100
+        },
+        "899d1491-e3b2-4ccb-a57a-1c47e5208ec0": {
+          "opcode": "motion_movesteps",
+          "next": null,
+          "parent": "dfeb6491-b536-4ad4-b9f8-5f8523f04782",
+          "inputs": {
+            "STEPS": [
+              1,
+              [
+                10,
+                "-100) forever(move(my variable), changevar(my variable, 1)"
+              ]
+            ]
+          },
+          "fields": {},
+          "shadow": false,
+          "topLevel": false,
+          "x": 0,
+          "y": 0
+        }
+      },
+      "comments": {},
+      "currentCostume": 0,
+      "costumes": [],
+      "sounds": [],
+      "volume": 100,
+      "layerOrder": 0,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "size": 100,
+      "direction": 90,
+      "draggable": false,
+      "rotationStyle": "all around"
+    }
+  ],
+  "meta": {
+    "semver": "3.0.0",
+    "vm": "0.2.0-prerelease.20200114",
+    "agent": "chatgpt-compiler"
+  }
+}
