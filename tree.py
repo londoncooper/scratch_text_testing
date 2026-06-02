@@ -4,6 +4,7 @@ import subprocess
 import re
 import random
 import msvcrt
+import string
 
 def insert_randoms(main_string, target_sub):
     # Define a function to generate the replacement string
@@ -24,6 +25,7 @@ def remove_random(main_string, target_sub):
     return result   
 
 
+
 test_script =  "forever(move(10), say_for('banana', 5), set_var('my_var', 5))"
 
 def copy_windows(text):
@@ -31,11 +33,12 @@ def copy_windows(text):
 
 def parse(input_string_var):
     substring_var = ["move", "say_for","set_var"]
-    input_string_var = insert_randoms(input_string_var,substring_var)
+    input_string_var_rand = insert_randoms(input_string_var,substring_var)
     # Parse the string into an Abstract Syntax Tree
     tree = ast.parse(input_string_var.strip(), mode='eval')
+    rand_str_tree = ast.parse(input_string_var_rand.strip(), mode='eval')
     first_func:str = ""
-
+    print("plain tree")
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
             # Check if it's a simple Name call
@@ -46,20 +49,36 @@ def parse(input_string_var):
                 else:
                     print(f"The current Function is: {func_name}. The previous Function was: {first_func}.")
                     first_func = func_name
+                    time.sleep(1)
+    first_func = ""
+    print("random string tree.")
+    for node in ast.walk(rand_str_tree):
+        if isinstance(node, ast.Call):
+            # Check if it's a simple Name call
+            if isinstance(node.func, ast.Name):
+                func_name = node.func.id
+                if not first_func:
+                   first_func = func_name
+                else:
+                    print(f"The current Function is: {func_name}. The previous Function was: {first_func}.")
+                    first_func = func_name
+                    time.sleep(1)
                 
     # This walks through the entire tree and finds all function calls
-    functions = [node for node in ast.walk(tree) if isinstance(node, ast.Call)]
-
-    #print(str(functions))
     copy_windows("AST: "+ast.dump(tree, indent=4))
 
     # Inspect the AST structure (e.g., dump it to a readable format)
-    print("coppied to clipboard")
-    unparsed = ast.unparse(tree)
-    print(f"Plain unparse: {unparsed}")
+    print("coppied original tree to clipboard")
+    time.sleep(1)
+    unparsed = ast.unparse(rand_str_tree)
+    print(f"""Plain unparse with random: 
+    {unparsed}""")
     print("")
+    time.sleep(1)
     idless_unparse = remove_random(unparsed, substring_var)
-    print(f"Unparsed string with random id removed: {idless_unparse}")
+    print(f"""Unparsed string with random id removed via function, and not stored tree: 
+    {idless_unparse}""")
+    time.sleep(1)
     print("Press any key to exit...")
     msvcrt.getch()
 
