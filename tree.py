@@ -4,7 +4,11 @@ import subprocess
 import re
 import random
 import msvcrt
-import string
+import prompt_toolkit
+from prompt_toolkit import prompt
+from prompt_toolkit.keys import Keys
+from prompt_toolkit.shortcuts import PromptSession
+from prompt_toolkit.key_binding import KeyBindings
 
 def insert_randoms(main_string, target_sub):
     # Define a function to generate the replacement string
@@ -35,8 +39,8 @@ def parse(input_string_var):
     substring_var = ["move", "say_for","set_var"]
     input_string_var_rand = insert_randoms(input_string_var,substring_var)
     # Parse the string into an Abstract Syntax Tree
-    tree = ast.parse(input_string_var.strip(), mode='eval')
-    rand_str_tree = ast.parse(input_string_var_rand.strip(), mode='eval')
+    tree = ast.parse(input_string_var.strip(), mode='exec')
+    rand_str_tree = ast.parse(input_string_var_rand.strip(), mode='exec')
     first_func:str = ""
     print("plain tree")
     for node in ast.walk(tree):
@@ -87,7 +91,28 @@ def choice_logic():
     if choice == "1":
         parse(test_script)
     elif choice == "2":
-        parse(input("Give line of scratch text: "))
+        try:
+                
+            bindings = KeyBindings()
+
+            # 2. Make the Tab key insert 4 spaces
+            @bindings.add('tab')
+            def _(event):
+                event.current_buffer.insert_text('    ')
+            print("Enter your text (Press Enter twice to submit):")
+            session = PromptSession()
+            lines = []
+
+            final_input = session.prompt('> ', multiline=True)
+
+            final_input = "\n".join(lines)
+            parse(final_input)
+            result = 10 / 0
+        except Exception as general_error:
+            # Code that catches any other unexpected error
+            print(f"Something else went wrong: {general_error}")
+            time.sleep(5)
+
     else:
          print("invalid input.")
          choice_logic()
